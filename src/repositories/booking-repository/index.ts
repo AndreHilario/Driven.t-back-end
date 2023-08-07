@@ -9,7 +9,7 @@ async function create({ roomId, userId }: CreateParams): Promise<Booking> {
     data: {
       roomId,
       userId,
-    }
+    },
   });
 }
 
@@ -20,7 +20,7 @@ async function findByRoomId(roomId: number) {
     },
     include: {
       Room: true,
-    }
+    },
   });
 }
 
@@ -31,7 +31,7 @@ async function findByUserId(userId: number) {
     },
     include: {
       Room: true,
-    }
+    },
   });
 }
 
@@ -46,7 +46,13 @@ async function upsertBooking({ id, roomId, userId }: UpdateParams) {
     },
     update: {
       roomId,
-    }
+    },
+  });
+}
+
+async function findAllBookings() {
+  return prisma.booking.findMany({
+    include: { Room: true },
   });
 }
 
@@ -55,6 +61,7 @@ const bookingRepository = {
   findByRoomId,
   findByUserId,
   upsertBooking,
+  findAllBookings,
 };
 
 export default bookingRepository;

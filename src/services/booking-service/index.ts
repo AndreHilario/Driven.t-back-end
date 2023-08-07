@@ -55,14 +55,33 @@ async function changeBookingRoomById(userId: number, roomId: number) {
   return bookingRepository.upsertBooking({
     id: booking.id,
     roomId,
-    userId
+    userId,
   });
+}
+
+async function allBookings(roomId: number) {
+  await checkValidBooking(roomId);
+  const search = await bookingRepository.findAllBookings();
+  const bookings = search.filter((data) => {
+    const result = {
+      id: data.id,
+      userId: data.userId,
+      roomId: data.Room.id,
+      hotelId: data.Room.hotelId,
+      capacity: data.Room.capacity,
+      name: data.Room.name,
+    };
+    return result;
+  });
+
+  return bookings;
 }
 
 const bookingService = {
   bookingRoomById,
   getBooking,
   changeBookingRoomById,
+  allBookings,
 };
 
 export default bookingService;
