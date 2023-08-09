@@ -19,6 +19,7 @@ model User {
   Session    Session[]
   Enrollment Enrollment[]
   Booking    Booking[]
+  Subscription    Subscription[]
 }
 
 model Session {
@@ -138,3 +139,45 @@ model Booking {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Activity {
+
+
+ id           Int            @id @default(autoincrement())
+ title        String
+ startsAt     DateTime
+ endsAt       DateTime
+ vacancies    Int
+ activitySpaceId Int
+ ActivitySpace   ActivitySpace     @relation(fields: [activitySpaceId], references: [id], onDelete: Cascade)
+ Subscription Subscription[]
+
+
+}
+
+
+model ActivitySpace {
+
+
+ id       Int        @id @default(autoincrement())
+ name     String
+ Activity Activity[]
+
+
+}
+
+
+model Subscription {
+
+
+ id         Int      @id() @default(autoincrement())
+ userId     Int
+ activityId Int
+ User       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+ Activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+ createdAt  DateTime @default(now())
+ updatedAt  DateTime @updatedAt
+
+
+}
+
