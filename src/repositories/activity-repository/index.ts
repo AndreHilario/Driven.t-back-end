@@ -50,7 +50,7 @@ async function findByDay(date: Date, userId: number): Promise<Activity[]> {
 }
 
 async function activitiesSpace() {
-  return await prisma.activitySpace.findMany({});
+  return await prisma.activitySpace.findMany({include: {Activity: true}});
 }
 
 async function subscribeOnActivity(userId: number, activityId: number) {
