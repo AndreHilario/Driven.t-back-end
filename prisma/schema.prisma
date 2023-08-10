@@ -141,8 +141,6 @@ model Booking {
 }
 
 model Activity {
-
-
  id           Int            @id @default(autoincrement())
  title        String
  startsAt     DateTime
@@ -151,25 +149,17 @@ model Activity {
  activitySpaceId Int
  ActivitySpace   ActivitySpace     @relation(fields: [activitySpaceId], references: [id], onDelete: Cascade)
  Subscription Subscription[]
-
-
 }
 
 
 model ActivitySpace {
-
-
  id       Int        @id @default(autoincrement())
  name     String
  Activity Activity[]
-
-
 }
 
 
 model Subscription {
-
-
  id         Int      @id() @default(autoincrement())
  userId     Int
  activityId Int
@@ -177,7 +167,5 @@ model Subscription {
  Activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
  createdAt  DateTime @default(now())
  updatedAt  DateTime @updatedAt
-
-
 }
 
