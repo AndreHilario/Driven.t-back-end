@@ -11,21 +11,9 @@ interface Event {
   endsAt: Date;
 }
 
-interface Hotel {
-  name: string;
-  image: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 async function main() {
   let event: Event | null = null;
-  let hotel: Hotel | null = null;
-
   const cachedEvent = await redisClient.get("event");
-
-  const cachedHotel = await redisClient.get("hotel");
-
   if (cachedEvent) {
     event = JSON.parse(cachedEvent);
   } else {
@@ -41,11 +29,23 @@ async function main() {
       };
 
       await redisClient.set("event", JSON.stringify(event));
+      await prisma.event.create({
+        data: event 
+      });
     } else {
       event = dbEvent;
       await redisClient.set("event", JSON.stringify(event));
     }
   }
+
+  interface Hotel {
+  name: string;
+  image: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+  let hotel: Hotel | null = null;
+  const cachedHotel = await redisClient.get("hotel");
 
   if(cachedHotel) {
     hotel = JSON.parse(cachedHotel);
@@ -61,10 +61,43 @@ async function main() {
       };
 
       await redisClient.set("hotel", JSON.stringify(hotel));
+      await prisma.hotel.create({
+        data: hotel 
+      });
     } else {
       hotel = dbHotel;
       await redisClient.set("hotel", JSON.stringify(hotel));
     }
+  }
+
+  interface TicketType {
+    name: string,
+    price: number,
+    isRemote: boolean,
+    includesHotel: boolean,
+    createdAt: Date,
+    updatedAt: Date,
+  }
+
+  let ticketType: TicketType | null = null;
+  const cachedTicket = await redisClient.get("ticket");
+
+  if(cachedTicket) {
+    ticketType = JSON.parse(cachedTicket);
+  }else{
+    ticketType = {
+      name: "VIP",
+      price: 200,
+      isRemote: false,
+      includesHotel: true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    redisClient.set("ticketType", JSON.stringify(ticketType));
+    await prisma.ticketType.create({
+      data: ticketType,
+    });
   }
 }
 
