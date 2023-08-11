@@ -77,11 +77,18 @@ async function allBookings(roomId: number) {
   return bookings;
 }
 
+async function listBookingByRoomId(roomId: number) {
+  await checkValidBooking(roomId);
+  const booking = await bookingRepository.findOneByRoomId(roomId);
+  return booking;
+}
+
 const bookingService = {
   bookingRoomById,
   getBooking,
   changeBookingRoomById,
   allBookings,
+  listBookingByRoomId,
 };
 
 export default bookingService;
