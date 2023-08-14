@@ -52,98 +52,98 @@ async function main() {
   if (!mainActivities) {
     let day = 1;
 
-    while(day <= 3){
-    const timeStop = dayjs().startOf("day").add(day, "day");
+    while(day <= 3) {
+      const timeStop = dayjs().startOf("day").add(day, "day");
 
       await prisma.activitySpace.create({
 
-      data: {
-        name: "Auditório II",
-        Activity: {
-          createMany: {
-            data: [
-              {
-                title: "Palestra: Black Desert",
-                startsAt: dayjs().add(day, "day").startOf("day").add(9, "hour").toDate(),
-                endsAt: dayjs().add(day, "day").startOf("day").add(9, "hour").clone().add(1, "hour").toDate(),
-                vacancies: 150,
-              },
-              {
-                title: "Palestra: Minecraft",
-                startsAt: dayjs().add(day, "day").startOf("day").add(10, "hour").toDate(),
-                endsAt: dayjs().add(day, "day").startOf("day").add(10, "hour").clone().add(1, "hour").toDate(),
-                vacancies: 180,
-              },
-            ],
+        data: {
+          name: "Auditório II",
+          Activity: {
+            createMany: {
+              data: [
+                {
+                  title: "Palestra: Black Desert",
+                  startsAt: dayjs().add(day, "day").startOf("day").add(9, "hour").toDate(),
+                  endsAt: dayjs().add(day, "day").startOf("day").add(9, "hour").clone().add(1, "hour").toDate(),
+                  vacancies: 150,
+                },
+                {
+                  title: "Palestra: Minecraft",
+                  startsAt: dayjs().add(day, "day").startOf("day").add(10, "hour").toDate(),
+                  endsAt: dayjs().add(day, "day").startOf("day").add(10, "hour").clone().add(1, "hour").toDate(),
+                  vacancies: 180,
+                },
+              ],
+            },
           },
         },
-      },
-    });
-    
-    await prisma.activitySpace.create({
+      });
+      
+      await prisma.activitySpace.create({
 
-      data: {
-        name: "Cozinha Profissional",
-        Activity: {
-          createMany: {
-            data: [
-              {
-                title: "Workshop Doces LowCarb",
-                startsAt: dayjs().add(day, "day").startOf("day").add(9, "hour").toDate(),
-                endsAt: dayjs().add(day, "day").startOf("day").add(9, "hour").clone().add(4, "hour").toDate(),
-                vacancies: 50,
-              },
-            ],
+        data: {
+          name: "Cozinha Profissional",
+          Activity: {
+            createMany: {
+              data: [
+                {
+                  title: "Workshop Doces LowCarb",
+                  startsAt: dayjs().add(day, "day").startOf("day").add(9, "hour").toDate(),
+                  endsAt: dayjs().add(day, "day").startOf("day").add(9, "hour").clone().add(4, "hour").toDate(),
+                  vacancies: 50,
+                },
+              ],
+            },
           },
         },
-      },
-    });
+      });
 
-  if(cachedHotel) {
-    hotel = JSON.parse(cachedHotel);
-  } else {
-    const dbHotel = await prisma.hotel.findFirst();
+      if(cachedHotel) {
+        hotel = JSON.parse(cachedHotel);
+      } else {
+        const dbHotel = await prisma.hotel.findFirst();
 
-    if (!dbHotel) {
-      hotel = {
-        name: "Driven Plaza",
-        image: "https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
+        if (!dbHotel) {
+          hotel = {
+            name: "Driven Plaza",
+            image: "https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          };
 
-      await redisClient.set("hotel", JSON.stringify(hotel));
-    } else {
-      hotel = dbHotel;
-      await redisClient.set("hotel", JSON.stringify(hotel));
+          await redisClient.set("hotel", JSON.stringify(hotel));
+        } else {
+          hotel = dbHotel;
+          await redisClient.set("hotel", JSON.stringify(hotel));
+        }
+        await prisma.activitySpace.create({
+
+          data: {
+            name: "Passeio ao ar Livre",
+            Activity: {
+              createMany: {
+                data: [
+                  {
+                    title: "Megulho na Cachoeira",
+                    startsAt: dayjs().add(day, "day").startOf("day").add(9, "hour").toDate(),
+                    endsAt: dayjs().add(day, "day").startOf("day").add(9, "hour").clone().add(1, "hour").toDate(),
+                    vacancies: 10,
+                  },
+                  {
+                    title: "Megulho na Cachoeira -  segundo dia",
+                    startsAt: dayjs().add(day, "day").startOf("day").add(10, "hour").toDate(),
+                    endsAt: dayjs().add(day, "day").startOf("day").add(10, "hour").clone().add(1, "hour").toDate(),
+                    vacancies: 24,
+                  },
+                ],
+              },
+            },
+          },
+        });
+        day++;
+      }
     }
-    await prisma.activitySpace.create({
-
-      data: {
-        name: "Passeio ao ar Livre",
-        Activity: {
-          createMany: {
-            data: [
-              {
-                title: "Megulho na Cachoeira",
-                startsAt: dayjs().add(day, "day").startOf("day").add(9, "hour").toDate(),
-                endsAt: dayjs().add(day, "day").startOf("day").add(9, "hour").clone().add(1, "hour").toDate(),
-                vacancies: 10,
-              },
-              {
-                title: "Megulho na Cachoeira -  segundo dia",
-                startsAt: dayjs().add(day, "day").startOf("day").add(10, "hour").toDate(),
-                endsAt: dayjs().add(day, "day").startOf("day").add(10, "hour").clone().add(1, "hour").toDate(),
-                vacancies: 24,
-              },
-            ],
-          },
-        },
-      },
-    });
-    day++
-    }
-
   }
 }
 
