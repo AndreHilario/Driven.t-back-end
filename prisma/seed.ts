@@ -18,6 +18,7 @@ interface Hotel {
   updatedAt: Date;
 }
 
+
 async function main() {
   let event: Event | null = null;
   let hotel: Hotel | null = null;
