@@ -57,6 +57,7 @@ async function allHotelsWithRooms(userId: number) {
   // }
   // return redisHotel; //se tiver retorna do cache
 }
+
 const hotelService = {
   getHotels,
   getHotelsWithRooms,

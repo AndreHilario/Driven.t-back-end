@@ -21,9 +21,31 @@ async function create(data: Prisma.UserUncheckedCreateInput) {
   });
 }
 
+async function getUserOrCreate(githubUserData: Prisma.UserUncheckedCreateInput, fakePassword: string) {
+  const existingUser = await prisma.user.findUnique({
+    where: {
+      email: githubUserData.email,
+    },
+  });
+
+  if (existingUser) {
+    return existingUser;
+  }
+
+  const newUser = await prisma.user.create({
+    data: {
+      email: githubUserData.email,
+      password: fakePassword,
+    },
+  });
+
+  return newUser;
+}
+
 const userRepository = {
   findByEmail,
   create,
+  getUserOrCreate
 };
 
 export default userRepository;

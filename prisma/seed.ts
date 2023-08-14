@@ -79,7 +79,7 @@ async function main() {
           },
         },
       });
-          
+      
       await prisma.activitySpace.create({
 
         data: {
