@@ -77,11 +77,25 @@ async function allBookings(roomId: number) {
   return bookings;
 }
 
+async function listBookingByRoomId(roomId: number) {
+  await checkValidBooking(roomId);
+  const booking = await bookingRepository.findOneByRoomId(roomId);
+  return booking;
+}
+
+async function deleteBookingById(bookingId: number) {
+  const result = await bookingRepository.deleteBooking(bookingId);
+  if (!result) throw notFoundError();
+  return result;
+}
+
 const bookingService = {
   bookingRoomById,
   getBooking,
   changeBookingRoomById,
   allBookings,
+  listBookingByRoomId,
+  deleteBookingById,
 };
 
 export default bookingService;
