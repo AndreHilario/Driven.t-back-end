@@ -71,6 +71,12 @@ async function findAllBookings() {
   });
 }
 
+async function deleteBooking(bookingId: number) {
+  return prisma.booking.delete({
+    where: { id: bookingId },
+  });
+}
+
 const bookingRepository = {
   create,
   findByRoomId,
@@ -78,6 +84,7 @@ const bookingRepository = {
   upsertBooking,
   findAllBookings,
   findOneByRoomId,
+  deleteBooking,
 };
 
 export default bookingRepository;

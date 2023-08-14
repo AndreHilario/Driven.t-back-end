@@ -83,12 +83,19 @@ async function listBookingByRoomId(roomId: number) {
   return booking;
 }
 
+async function deleteBookingById(bookingId: number) {
+  const result = await bookingRepository.deleteBooking(bookingId);
+  if (!result) throw notFoundError();
+  return result;
+}
+
 const bookingService = {
   bookingRoomById,
   getBooking,
   changeBookingRoomById,
   allBookings,
   listBookingByRoomId,
+  deleteBookingById,
 };
 
 export default bookingService;
